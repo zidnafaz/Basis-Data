@@ -53,6 +53,10 @@ INSERT INTO mata_kuliah (kode, nama) VALUES
 ('KCB', 'Kecerdasan Buatan'),
 ('ASD', 'Algortima dan Struktur Data');
 
+DROP Table mata_kuliah;
+
+DROP Table nilai;
+
 UPDATE mata_kuliah SET
     nama = 'Multimdia Terapan Tingkat Lanjut',
     sks = 3
@@ -92,3 +96,25 @@ SELECT * FROM nilai WHERE nilai_huruf BETWEEN 'B+' AND 'C';
 
 SELECT * FROM mahasiswa WHERE nama LIKE '%an%';
 
+SELECT kode FROM mata_kuliah UNION ALL SELECT kode_mata_kuliah FROM nilai;
+
+SELECT kode FROM mata_kuliah INTERSECT SELECT kode_mata_kuliah FROM nilai;
+
+SELECT kode FROM mata_kuliah EXCEPT SELECT kode_mata_kuliah FROM nilai;
+
+SELECT nim, kode_mata_kuliah, nilai_huruf
+FROM nilai
+WHERE nilai_huruf > ALL
+(SELECT nilai_huruf FROM nilai WHERE nilai_huruf = 'A');
+
+SELECT nim, kode_mata_kuliah, nilai_huruf
+FROM nilai
+WHERE nilai_huruf IN
+(SELECT nilai_huruf FROM nilai WHERE nilai_huruf > 'A');
+
+SELECT nim,(SELECT nama FROM mahasiswa WHERE nilai.NIM=mahasiswa.NIM)
+nama,(SELECT nama FROM mata_kuliah mk WHERE mk.kode = nilai.kode_mata_kuliah) mk,nilai_huruf
+FROM nilai
+WHERE NIM=1;
+
+SELECT COUNT(nilai_huruf) FROM nilai;
