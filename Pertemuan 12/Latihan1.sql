@@ -25,6 +25,8 @@ CREATE TABLE nilai (
     PRIMARY KEY (id)
 );
 
+DROP TABLE nilai;
+
 INSERT INTO nilai (NIM, kode_mata_kuliah, nilai_huruf) VALUES
     (1, 'KCB', 'B+'),
     (2, 'ASD', 'A'),
@@ -118,3 +120,69 @@ FROM nilai
 WHERE NIM=1;
 
 SELECT COUNT(nilai_huruf) FROM nilai;
+
+/* Latihan 2 */
+
+UPDATE mata_kuliah
+SET sks = 
+    CASE
+        WHEN kode = 'ASD' THEN 3
+        WHEN kode = 'BDD' THEN 3
+        WHEN kode = 'KCB' THEN 2
+        WHEN kode = 'MMT' THEN 2
+        WHEN kode = 'PBO' THEN 4
+        WHEN kode = 'SPK' THEN 4
+        ELSE sks
+    END
+WHERE kode IN ('ASD', 'BDD', 'KCB', 'MMT', 'PBO', 'SPK');
+
+INSERT INTO mahasiswa (NIM, nama, nomor_telepon) VALUES
+(5, 'Iwan Tirta', '0855627134'),
+(6, 'Charlie Setiabudi', '0859986420'),
+(7, 'Diandra Paramita', '0853546782');
+
+SELECT NIM,kode_mata_kuliah, nilai_huruf
+FROM nilai
+WHERE kode_mata_kuliah = 'MMT';
+
+INSERT INTO nilai (nim, kode_mata_kuliah, nilai_huruf)
+SELECT nim, kode_mata_kuliah, 'B+'
+FROM nilai
+WHERE nilai_huruf = 'B+'
+LIMIT 1;
+
+SELECT DISTINCT kode_mata_kuliah
+FROM nilai
+WHERE kode_mata_kuliah IN (SELECT DISTINCT kode_mata_kuliah FROM nilai);
+
+SELECT * from nilai
+WHERE nilai_huruf NOT BETWEEN 'C' AND 'E';
+
+SELECT *
+FROM mata_kuliah
+WHERE sks > (
+    SELECT sks
+    FROM mata_kuliah
+    WHERE nama = 'Basis Data Dasar'
+);
+
+INSERT INTO nilai (NIM, kode_mata_kuliah, nilai_huruf)
+SELECT NIM, 'ASD', 'B+',
+SELECT NIM, 'BDD', 'B+'
+FROM nilai
+WHERE nilai_huruf = 'B+';
+
+INSERT INTO nilai (NIM, kode_mata_kuliah, nilai_huruf)
+SELECT NIM, 'ASD', 'B+'
+FROM nilai
+WHERE nilai_huruf = 'B+'
+UNION ALL
+SELECT NIM, 'BDD', 'B+'
+FROM nilai
+WHERE nilai_huruf = 'B+'
+UNION ALL
+SELECT NIM, 'MMT', 'B+'
+FROM nilai
+LIMIT 3;
+
+DELETE from nilai;
