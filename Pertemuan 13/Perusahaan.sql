@@ -91,12 +91,50 @@ INSERT INTO tanggungan (no_tang, no_ktp, nama, jenis_kel, tgl_lahir, hubungan) V
 (4, 20104310001, 'Shinta', 'P', '1972-05-20', 'Istri'),
 (5, 20104290001, 'Dini', 'P', '1990-07-01', 'Anak');
 
-SELECT * FROM pegawai ORDER BY tgl_lahir DESC LIMIT 1;
+-- Pertanyaan 1
+
+SELECT d.nama AS departemen, p.nama AS pegawai, p.tgl_lahir
+FROM departemen d
+JOIN pegawai p ON d.no_dep = p.no_dep
+ORDER BY p.tgl_lahir DESC
+LIMIT 1;
+
+-- Pertanyaan 2
+
+SELECT d.nama AS departemen, COUNT(p.no_ktp) AS jumlah_pegawai
+FROM departemen d
+LEFT JOIN pegawai p ON d.no_dep = p.no_dep
+GROUP BY d.nama;
+
+-- Pertanyaan 3
+
+SELECT 
+    p.no_pro AS proyek_no_pro, 
+    p.nama AS proyek_nama, 
+    p.lokasi AS proyek_lokasi, 
+    p.no_dep AS proyek_no_dep, 
+    d.no_dep AS departemen_no_dep, 
+    d.nama AS departemen_nama, 
+    d.lokasi AS departemen_lokasi
+FROM 
+    proyek p
+JOIN 
+    departemen d ON p.no_dep = d.no_dep;
+
+----------------------------------------------
 
 DROP TABLE proyek; 
 DROP TABLE kerja; 
 DROP TABLE pegawai; 
 DROP TABLE tanggungan;
 DROP TABLE departemen;
+
 DELETE FROM departemen;
+
+SELECT * FROM departemen;
+SELECT * FROM pegawai;
+SELECT * FROM proyek;
+SELECT * FROM kerja;
+SELECT * FROM tanggungan;
+
 SHOW TABLES;
